@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSort (GREEN CITY HACK) - AI Waste Segregation Game</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌱 EcoSort (GREEN CITY HACK)</h1>
+            <p class="ai-subtitle">AI-Powered Waste Segregation Game</p>
+        </header>
+
+        <div class="game-container">
+            <div class="score-section">
+                <div class="score-card">
+                    <h3>Your Score</h3>
+                    <div class="score" id="userScore">{{ user_score.score }}</div>
+                    <div class="level" id="userLevel">Level {{ user_score.level }}</div>
+                    <div class="level-progress-bar">
+                        <div class="level-progress" id="levelProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="leaderboard-card">
+                    <h3>Leaderboard</h3>
+                    <div id="leaderboard">
+                        {% if leaderboard %}
+                            {% for entry in leaderboard %}
+                            <div class="leaderboard-item">
+                                <span class="rank">{{ forloop.counter }}</span>
+                                <span class="leaderboard-avatar">🧑‍🎓</span>
+                                <span class="name">{{ entry.name }}</span>
+                                <span class="points">{{ entry.score }}</span>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="leaderboard-item">
+                                <span class="rank">1</span>
+                                <span class="leaderboard-avatar">🦸‍♂️</span>
+                                <span class="name">EcoHero</span>
+                                <span class="points">1200</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">2</span>
+                                <span class="leaderboard-avatar">👸</span>
+                                <span class="name">GreenQueen</span>
+                                <span class="points">950</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">3</span>
+                                <span class="leaderboard-avatar">🤴</span>
+                                <span class="name">RecycleKing</span>
+                                <span class="points">800</span>
+                            </div>
+                            <div class="leaderboard-item">
+                                <span class="rank">4</span>
+                                <span class="leaderboard-avatar">🏆</span>
+                                <span class="name">CompostChamp</span>
+                                <span class="points">700</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-game">
+                <div class="upload-section">
+                    <h2>Sort Your Waste!</h2>
+                    <p>Upload a photo of waste item and let AI help you sort it correctly</p>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <div class="upload-icon">📷</div>
+                            <p>Click to upload or drag & drop</p>
+                            <p class="upload-hint">Supports: JPG, PNG, WebP</p>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <img id="previewImage" alt="Uploaded waste item">
+                        <button class="analyze-btn" id="analyzeBtn">🔍 Analyze Waste</button>
+                    </div>
+                </div>
+
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <h3>AI Analysis Result</h3>
+                    <div class="prediction-card">
+                        <div class="prediction-item">
+                            <span class="category">Plastic</span>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="plasticConfidence" style="width: 0%"></div>
+                            </div>
+                            <span class="confidence-text" id="plasticText">0%</span>
+                        </div>
+                        <div class="prediction-item">
+                            <span class="category">Paper</span>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="paperConfidence" style="width: 0%"></div>
+                            </div>
+                            <span class="confidence-text" id="paperText">0%</span>
+                        </div>
+                        <div class="prediction-item">
+                            <span class="category">Organic</span>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="organicConfidence" style="width: 0%"></div>
+                            </div>
+                            <span class="confidence-text" id="organicText">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="result-message" id="resultMessage"></div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-correct" id="correctBtn">✅ Correct!</button>
+                        <button class="btn btn-wrong" id="wrongBtn">❌ Wrong</button>
+                    </div>
+                </div>
+
+                <!-- Category badge will be injected by JS above recycling info -->
+                <div class="recycling-info-section" id="recyclingInfoSection" style="display: none;">
+                    <div id="categoryBadgeContainer"></div>
+                    <h3>♻️ Recycling Guide</h3>
+                    <div class="recycling-content" id="recyclingContent">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="categories-info">
+                    <h3>Waste Categories</h3>
+                    <div class="category-grid">
+                        <div class="category-card">
+                            <div class="category-icon">🥤</div>
+                            <h4>Plastic</h4>
+                            <p>Bottles, containers, packaging</p>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">📄</div>
+                            <h4>Paper</h4>
+                            <p>Newspapers, cardboard, magazines</p>
+                        </div>
+                        <div class="category-card">
+                            <div class="category-icon">🍎</div>
+                            <h4>Organic</h4>
+                            <p>Food waste, leaves, compost</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation-links">
+                    <a href="{% url 'waste_classifier:history' %}" class="nav-link">📊 View History</a>
+                </div>
+            </div>
+        </div>
+        <div class="confetti" id="confetti"></div>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html> 

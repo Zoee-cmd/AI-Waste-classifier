@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification History - EcoSort (GREEN CITY HACK)</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .history-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .history-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .predicted-category {
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+        }
+        .predicted-category.plastic { background: #2196F3; }
+        .predicted-category.paper { background: #FF9800; }
+        .predicted-category.organic { background: #4CAF50; }
+        .confidence-scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .confidence-score {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .confidence-score .label {
+            font-weight: bold;
+            color: #666;
+        }
+        .confidence-score .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2E7D32;
+        }
+        .feedback-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .feedback-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .feedback-badge.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        .empty-history {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌱 EcoSort (GREEN CITY HACK)</h1>
+            <p>Classification History</p>
+        </header>
+
+        <div class="history-container">
+            <a href="{% url 'waste_classifier:index' %}" class="back-link">← Back to Game</a>
+            
+            <h2>Your Classification History</h2>
+            
+            {% if classifications %}
+                {% for classification in classifications %}
+                <div class="history-item">
+                    <div class="history-header">
+                        <span class="predicted-category {{ classification.predicted_category }}">
+                            {{ classification.get_predicted_category_display }}
+                        </span>
+                        <span class="date">{{ classification.created_at|date:"M d, Y H:i" }}</span>
+                    </div>
+                    
+                    <div class="confidence-scores">
+                        <div class="confidence-score">
+                            <div class="label">Plastic</div>
+                            <div class="value">{{ classification.plastic_confidence }}%</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="label">Paper</div>
+                            <div class="value">{{ classification.paper_confidence }}%</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="label">Organic</div>
+                            <div class="value">{{ classification.organic_confidence }}%</div>
+                        </div>
+                    </div>
+                    
+                    {% if classification.user_feedback is not None %}
+                    <div style="margin-top: 15px;">
+                        <span class="feedback-badge {% if classification.user_feedback %}correct{% else %}incorrect{% endif %}">
+                            {% if classification.user_feedback %}
+                                ✅ You marked as correct
+                            {% else %}
+                                ❌ You marked as incorrect
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-history">
+                    <h3>No classifications yet</h3>
+                    <p>Start playing the game to see your classification history here!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,863 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #b76e79 0%, #2ecc40 100%);
+    min-height: 100vh;
+    color: #222;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #b76e79;
+    text-shadow: 0 4px 12px #2ecc40, 0 1px 0 #fff;
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #2ecc40;
+    text-shadow: 0 4px 12px #ffd700, 0 1px 0 #fff, 0 2px 8px #2ecc40;
+    letter-spacing: 2px;
+}
+
+.header p, .ai-subtitle {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px #b76e79, 0 1px 0 #fff, 0 2px 8px #2ecc40;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.game-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 30px;
+    background: rgba(255,255,255,0.90);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px #b76e7944, 0 2px 8px #2ecc4044;
+    border: 2px solid #b76e79;
+}
+
+.score-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.score-card, .leaderboard-card {
+    background: rgba(183,110,121,0.12);
+    color: #222;
+    padding: 25px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px #b76e7944, 0 2px 8px #2ecc4044;
+    border: 2px solid #b76e79;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.score-card:hover, .leaderboard-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 20px 40px #b76e7944, 0 4px 16px #2ecc4044;
+}
+
+.score-card h3, .leaderboard-card h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #b76e79;
+    text-shadow: 0 2px 8px #2ecc40, 0 1px 0 #fff;
+    border-bottom: 2px solid #b76e79;
+    padding-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.score {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2ecc40;
+    text-shadow: 0 2px 8px #b76e79;
+}
+
+.level {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    color: #b76e79;
+    text-shadow: 0 2px 8px #2ecc40;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 2px solid #b76e79;
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 8px #b76e7922;
+    font-weight: 500;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+.rank {
+    font-weight: bold;
+    color: #2ecc40;
+    font-size: 1.2rem;
+    text-shadow: 0 1px 0 #b76e79;
+}
+
+.name {
+    color: #222;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.points {
+    color: #b76e79;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #2ecc40;
+}
+
+.leaderboard-item:hover {
+    background: #b76e7922;
+    box-shadow: 0 4px 16px #2ecc4044;
+}
+
+.main-game {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.upload-section {
+    text-align: center;
+}
+
+.upload-section h2 {
+    color: #b76e79;
+    margin-bottom: 10px;
+    font-size: 2rem;
+    text-shadow: 0 2px 8px #2ecc40;
+}
+
+.upload-section p {
+    color: #222;
+    margin-bottom: 30px;
+}
+
+.upload-area {
+    border: 3px dashed #b76e79;
+    border-radius: 15px;
+    padding: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    box-shadow: 0 2px 8px #b76e7922;
+}
+
+.upload-area:hover {
+    border-color: #2ecc40;
+    background: #f3e6e9;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 4px 16px #2ecc4044;
+}
+
+.upload-content {
+    text-align: center;
+}
+
+.upload-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    color: #b76e79;
+    text-shadow: 0 2px 8px #2ecc40;
+}
+
+.upload-hint {
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.preview-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#previewImage {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px #b76e7944, 0 2px 8px #2ecc4022;
+    margin-bottom: 20px;
+    border: 2px solid #2ecc40;
+}
+
+.analyze-btn {
+    background: linear-gradient(135deg, #b76e79, #2ecc40);
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px #b76e7933, 0 2px 8px #2ecc4022;
+}
+
+.analyze-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 20px #2ecc4044, 0 4px 16px #b76e7922;
+}
+
+.result-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px #b76e7922;
+    border: 2px solid #b76e79;
+}
+
+.result-section h3 {
+    color: #2ecc40;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 2px 8px #b76e79;
+}
+
+.prediction-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px #b76e7922, 0 2px 8px #2ecc4022;
+    border: 2px solid #2ecc40;
+}
+
+.prediction-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.prediction-item:last-child {
+    margin-bottom: 0;
+}
+
+.category {
+    font-weight: bold;
+    color: #b76e79;
+    margin-right: 10px;
+    text-shadow: 0 1px 0 #2ecc40;
+}
+
+.confidence-bar {
+    flex: 1;
+    height: 18px;
+    background: #eee;
+    border-radius: 8px;
+    margin: 0 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px #b76e7922;
+    border: 1.5px solid #b76e79;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #b76e79 60%, #2ecc40 100%);
+    border-radius: 8px;
+    transition: width 1s cubic-bezier(0.4, 0.2, 0.2, 1);
+    box-shadow: 0 1px 4px #2ecc4022;
+}
+
+.confidence-text {
+    min-width: 50px;
+    text-align: right;
+    font-weight: bold;
+    color: #2ecc40;
+    text-shadow: 0 1px 0 #b76e79;
+}
+
+.result-message {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    background: #fffbe6;
+    color: #2ecc40;
+    border: 2px solid #b76e79;
+    box-shadow: 0 2px 8px #b76e7922;
+}
+
+.result-message.correct {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #2ecc40;
+}
+
+.result-message.incorrect {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #b76e79;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    background: linear-gradient(135deg, #b76e79, #2ecc40);
+    color: #fff;
+    box-shadow: 0 2px 8px #b76e7922;
+}
+
+.btn-correct {
+    background: linear-gradient(135deg, #2ecc40, #b76e79);
+    color: white;
+}
+
+.btn-wrong {
+    background: linear-gradient(135deg, #b76e79, #d32f2f);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px #2ecc4044, 0 2px 8px #b76e7922;
+}
+
+.categories-info {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px #b76e7922;
+    border: 2px solid #b76e79;
+}
+
+.categories-info h3 {
+    color: #b76e79;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 2px 8px #2ecc40;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.category-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px #b76e7922, 0 2px 8px #2ecc4022;
+    transition: transform 0.3s ease;
+    border: 2px solid #2ecc40;
+}
+
+.category-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 30px #b76e7944, 0 4px 16px #2ecc4022;
+}
+
+.category-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #b76e79;
+    text-shadow: 0 2px 8px #2ecc40;
+}
+
+.category-card h4 {
+    color: #b76e79;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px #2ecc40;
+}
+
+.category-card p {
+    color: #222;
+    font-size: 0.9rem;
+}
+
+.navigation-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #b76e79, #2ecc40);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px #b76e7922;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 16px #2ecc4044, 0 2px 8px #b76e7922;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #b76e79;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .game-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .score {
+        font-size: 2rem;
+    }
+    
+    .upload-area {
+        padding: 30px 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .game-container {
+        padding: 20px;
+    }
+    
+    .upload-area {
+        padding: 20px 15px;
+    }
+    
+    .upload-icon {
+        font-size: 3rem;
+    }
+}
+
+/* Recycling Information Section Styles */
+.recycling-info-section {
+    background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: 2px solid #4CAF50;
+}
+
+.recycling-info-section h3 {
+    color: #2E7D32;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.recycling-guide {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.recycling-guide h4 {
+    color: #2E7D32;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.recycling-description {
+    color: #666;
+    text-align: center;
+    margin-bottom: 25px;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.recycling-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.recycling-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+}
+
+.recycling-section h5 {
+    color: #2E7D32;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.steps-list, .examples-list, .tips-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.steps-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.steps-list li:before {
+    content: counter(step-counter);
+    counter-increment: step-counter;
+    position: absolute;
+    left: 0;
+    top: 8px;
+    background: #4CAF50;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.steps-list {
+    counter-reset: step-counter;
+}
+
+.examples-list li, .tips-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.examples-list li:before {
+    content: "🔄";
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+.tips-list li:before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+.recycling-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.recycling-image {
+    text-align: center;
+}
+
+.recycling-image img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.recycling-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive design for recycling section */
+@media (max-width: 768px) {
+    .recycling-sections {
+        grid-template-columns: 1fr;
+    }
+    
+    .recycling-images {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .recycling-info-section {
+        padding: 15px;
+    }
+    
+    .recycling-guide {
+        padding: 15px;
+    }
+    
+    .recycling-images {
+        grid-template-columns: 1fr;
+    }
+} 
+
+.recycling-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(44,204,64,0.15) 0%, rgba(255,215,0,0.85) 100%;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.recycling-modal-content {
+    background: #fffbe6;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px #2ecc4044, 0 2px 8px #ffd700;
+    padding: 32px 24px 24px 24px;
+    max-width: 480px;
+    width: 90vw;
+    text-align: center;
+    position: relative;
+    border: 3px solid #ffd700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recycling-modal-content img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 16px #2ecc4044, 0 2px 8px #ffd70022;
+    border: 2px solid #2ecc40;
+}
+
+.recycling-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 2rem;
+    color: #ffd700;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 0 2px 8px #2ecc40;
+    transition: color 0.2s;
+}
+
+.recycling-modal-close:hover {
+    color: #2ecc40;
+}
+
+#recyclingModalText {
+    color: #2ecc40;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-shadow: 0 1px 0 #ffd700;
+    margin-top: 8px;
+} 
+
+/* 1. Animated confidence bars */
+.confidence-fill {
+    transition: width 1s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+/* 2. Fade-in for recycling info */
+.recycling-info-section {
+    animation: fadeInUp 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Category badge with icon */
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(90deg, #2ecc40 60%, #ffd700 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 24px;
+    padding: 8px 18px;
+    box-shadow: 0 2px 8px #ffd70022;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+    gap: 10px;
+    border: 2px solid #ffd700;
+}
+
+/* 4. Progress bar for level */
+.level-progress-bar {
+    width: 100%;
+    height: 18px;
+    background: #eee;
+    border-radius: 10px;
+    margin: 12px 0 0 0;
+    overflow: hidden;
+    box-shadow: 0 1px 4px #ffd70022;
+    border: 1.5px solid #ffd700;
+}
+.level-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #2ecc40 60%, #ffd700 100%);
+    border-radius: 10px;
+    transition: width 1s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+/* 5. Leaderboard avatars */
+.leaderboard-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid #2ecc40;
+    box-shadow: 0 2px 8px #ffd70022;
+    background: #fff;
+}
+
+/* 6. Glassmorphism for cards */
+.score-card, .leaderboard-card, .prediction-card, .category-card, .recycling-modal-content {
+    background: rgba(255,255,255,0.85) !important;
+    backdrop-filter: blur(8px);
+    border: 2px solid #ffd700;
+}
+
+/* 7. Tooltip styling */
+.tooltip {
+    position: relative;
+    cursor: pointer;
+}
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background: #2ecc40;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -110px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px #ffd70022;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 8. Confetti effect base styles */
+.confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 3000;
+}
+.confetti-piece {
+    position: absolute;
+    width: 12px;
+    height: 18px;
+    border-radius: 4px;
+    opacity: 0.85;
+    will-change: transform;
+} 
+
+.ai-subtitle {
+    color: #b76e79;
+    font-weight: bold;
+    font-size: 1.35rem;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px #ffd700, 0 1px 0 #fff, 0 2px 8px #b76e79;
+    margin-top: 8px;
+    margin-bottom: 0;
+} 
